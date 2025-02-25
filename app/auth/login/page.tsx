@@ -3,6 +3,8 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -17,30 +19,31 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 text-white">
-      <h1 className="text-3xl font-bold">Login</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="mt-4 p-2 border border-gray-700 bg-gray-800 rounded"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="mt-2 p-2 border border-gray-700 bg-gray-800 rounded"
-      />
-      <button 
-        onClick={handleLogin} 
-        className="mt-4 bg-blue-500 p-2 rounded hover:bg-blue-600 transition-colors"
-      >
-        Login
-      </button>
-    </div>
+    <section className="min-h-screen flex items-center justify-center bg-lavender-100 text-gray-900 px-6 py-16">
+      <div className="bg-white border border-lavender-300 shadow-md p-6 rounded-lg w-full max-w-sm">
+        <h1 className="text-2xl font-semibold text-center mb-4">Login</h1>
+        <div className="space-y-4">
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-lavender-300 w-full"
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border-lavender-300 w-full"
+          />
+          <Button onClick={handleLogin} className="w-full bg-lavender-500 text-white hover:bg-lavender-600">
+            Login
+          </Button>
+        </div>
+      </div>
+    </section>
   );
-};
+}
 
 export default LoginPage; 

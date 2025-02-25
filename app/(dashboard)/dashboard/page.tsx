@@ -168,32 +168,18 @@ export default function Dashboard() {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-black px-4 py-8 text-gray-200">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent mix-blend-overlay backdrop-blur-[1px]" />
-      
-      <div 
-        className="absolute inset-0 opacity-20 backdrop-blur-sm"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
-        }}
-      />
-
-      <div className="absolute inset-0">
-        <BackgroundBeams />
-      </div>
-
-      <div className="relative z-10 container mx-auto space-y-6 px-4 py-14">
-      <FloatingNav navItems={navItems} />
-        {/* Profile Section */}
-        <Card className="bg-gray-950/50 border-gray-800 text-white backdrop-blur-sm">
+    <section className="min-h-screen bg-gradient-to-br from-purple-100 to-purple-300 px-6 py-10 text-gray-800">
+      <div className="container mx-auto space-y-6">
+ 
+       <Card className="bg-white border border-purple-300 shadow-md">
           <CardHeader>
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-gray-800 flex items-center justify-center">
-                <FiUser className="h-8 w-8 text-gray-400" />
+              <div className="h-16 w-16 rounded-full bg-purple-200 flex items-center justify-center">
+                <FiUser className="h-8 w-8 text-purple-600" />
               </div>
               <div>
-                <CardTitle className="text-2xl">{user?.name || 'User'}</CardTitle>
-                <CardDescription className="text-gray-400">{user?.email || 'user@example.com'}</CardDescription>
+                <CardTitle className="text-xl font-semibold">{user?.name || 'User'}</CardTitle>
+                <CardDescription className="text-gray-500">{user?.email || 'user@example.com'}</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -215,177 +201,71 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Bookings Table Card */}
-        <Card className="bg-gray-950/50 border-gray-800 text-white backdrop-blur-sm">
+        {/* Bookings Table */}
+        <Card className="bg-white border border-purple-300 shadow-md">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Booking History</CardTitle>
-                <CardDescription className="text-gray-400">View all your consultation bookings</CardDescription>
-              </div>
-              <div className="flex items-center gap-4">
-                {/* Search */}
-                <div className="relative">
-                  <Input
-                    placeholder="Search bookings..."
-                    value={searchTerm}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-                    className="pl-10 border-gray-800 text-white bg-transparent"
-                  />
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                </div>
-
-                {/* Filter */}
+              <CardTitle>Booking History</CardTitle>
+              <div className="flex items-center gap-3">
+                <Input
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border-gray-300"
+                />
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-[140px] border-gray-800 bg-transparent text-white">
-                    <SelectValue placeholder="Filter Status" />
+                  <SelectTrigger className="border-gray-300">
+                    <SelectValue placeholder="Filter" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-950 border-gray-800">
-                    <SelectItem value="all" className="text-gray-400">All Status</SelectItem>
-                    <SelectItem value="Completed" className="text-gray-400">Completed</SelectItem>
-                    <SelectItem value="Upcoming" className="text-gray-400">Upcoming</SelectItem>
-                    <SelectItem value="Cancelled" className="text-gray-400">Cancelled</SelectItem>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="Upcoming">Upcoming</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
                   </SelectContent>
                 </Select>
-
-                {/* Sort */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="border-gray-800 bg-transparent text-white">
-                      <FiFilter className="mr-2" /> Sort
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-gray-950 border-gray-800 text-gray-400">
-                    <DropdownMenuItem onClick={() => {
-                      setSortField("date");
-                      setIsAscending(true);
-                    }}>
-                      Date (Newest)
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {
-                      setSortField("date");
-                      setIsAscending(false);
-                    }}>
-                      Date (Oldest)
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {
-                      setSortField("type");
-                      setIsAscending(true);
-                    }}>
-                      Type (A-Z)
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {
-                      setSortField("type");
-                      setIsAscending(false);
-                    }}>
-                      Type (Z-A)
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             {loading ? (
-              // Skeleton loading
-              Array.from({ length: 3 }).map((_, idx) => (
-                <div key={idx} className="flex items-center space-x-4 py-4">
-                  <Skeleton className="h-4 w-[100px]" />
-                  <Skeleton className="h-4 w-[80px]" />
-                  <Skeleton className="h-4 w-[150px]" />
-                  <Skeleton className="h-6 w-[100px]" />
-                </div>
-              ))
+              <p className="text-gray-500">Loading...</p>
             ) : (
-              <>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-gray-800 hover:bg-transparent">
-                      <TableHead className="text-gray-400">Date</TableHead>
-                      <TableHead className="text-gray-400">Time</TableHead>
-                      <TableHead className="text-gray-400">Type</TableHead>
-                      <TableHead className="text-gray-400">Status</TableHead>
-                      <TableHead className="text-gray-400">Actions</TableHead>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Time</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {bookings.map((booking) => (
+                    <TableRow key={booking.id}>
+                      <TableCell>{booking.date}</TableCell>
+                      <TableCell>{booking.time}</TableCell>
+                      <TableCell>{booking.type}</TableCell>
+                      <TableCell>
+                        <Badge className={
+                          booking.status === "Completed" ? "bg-green-200 text-green-700" : 
+                          booking.status === "Upcoming" ? "bg-blue-200 text-blue-700" : 
+                          "bg-red-200 text-red-700"
+                        }>
+                          {booking.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {booking.status === "Upcoming" && (
+                          <Button size="sm" variant="outline" className="text-red-500 border-red-300">
+                            Cancel
+                          </Button>
+                        )}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedBookings.map((booking: Booking) => (
-                      <TableRow key={booking.id} className="border-gray-800 hover:bg-transparent">
-                        <TableCell className="text-gray-200">{booking.date}</TableCell>
-                        <TableCell className="text-gray-200">{booking.time}</TableCell>
-                        <TableCell className="text-gray-200">{booking.type}</TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant={
-                              booking.status === "Completed" ? "secondary" :
-                              booking.status === "Upcoming" ? "default" :
-                              "destructive"
-                            }
-                            className={
-                              booking.status === "Completed" ? "bg-green-500/20 text-green-400" :
-                              booking.status === "Upcoming" ? "bg-blue-500/20 text-blue-400" :
-                              "bg-red-500/20 text-red-400"
-                            }
-                          >
-                            {booking.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            {booking.status === "Upcoming" && (
-                              <>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="bg-transparent border-gray-800 hover:bg-red-500/20 hover:text-red-400"
-                                  onClick={() => handleStatusChange(booking.id, "Cancelled")}
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="bg-transparent text-red-400 hover:bg-red-500/20 hover:text-red-400"
-                                  onClick={() => handleDelete(booking.id)}
-                                >
-                                  <FiTrash2 />
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-
-                {/* Pagination */}
-                <div className="flex items-center justify-between mt-4">
-                  <p className="text-sm text-gray-400">
-                    Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedBookings.length)} of {filteredAndSortedBookings.length} entries
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage((prev: number) => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                      className="border-gray-800 bg-transparent text-white"
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage((prev: number) => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                      className="border-gray-800 bg-transparent text-white"
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              </>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>

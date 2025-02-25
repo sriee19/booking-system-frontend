@@ -56,22 +56,22 @@ export default function BookingForm() {
   }
 
   return (
-    <section className="relative bg-gray-950 w-full min-h-screen flex justify-center items-center text-white p-4">
+    <section className="relative bg-[#F3E8FF] w-full min-h-screen flex justify-center items-center text-[#4A235A] p-4">
       {/* Background layer */}
       <div className="absolute inset-0 z-0">
         <BackgroundBeams />
       </div>
 
       {/* Content layer */}
-      <div className="relative z-10 w-full max-w-5xl space-y-8 rounded-xl border bg-gray-950/50 border-gray-800 p-6 backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-4xl space-y-8 rounded-lg border bg-[#EAD1FF] border-[#D0A9F5] p-6 shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold">Book Consultation</h1>
-          <p className="text-gray-400">Fill in the details to schedule your consultation.</p>
+          <h1 className="text-3xl font-bold text-[#4A235A]">Book Consultation</h1>
+          <p className="text-[#6C3483]">Fill in the details to schedule your consultation.</p>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column */}
               <div className="space-y-6">
                 <FormField
@@ -84,7 +84,7 @@ export default function BookingForm() {
                         <Input 
                           placeholder="Your Name" 
                           {...field} 
-                          className="border-gray-800 text-white bg-transparent hover:bg-transparent hover:text-white hover:border-gray-700  h-12 [-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0,0)] [-webkit-autofill]:text-white" 
+                          className="border-[#D0A9F5] text-[#4A235A] bg-white hover:border-[#B977F5] h-12 rounded-lg px-4" 
                         />
                       </FormControl>
                       <FormMessage />
@@ -102,40 +102,43 @@ export default function BookingForm() {
                         <Input 
                           placeholder="Your Email" 
                           {...field} 
-                          className="border-gray-800 text-white bg-transparent hover:bg-transparent hover:text-white hover:border-gray-700 h-12 [-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0,0)] [-webkit-autofill]:text-white" 
+                          className="border-[#D0A9F5] text-[#4A235A] bg-white hover:border-[#B977F5] h-12 rounded-lg px-4" 
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+              </div>
 
+              {/* Right Column */}
+              <div className="space-y-6">
                 <FormField
                   control={form.control}
                   name="date"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="mb-2">Consultation Date</FormLabel>
+                      <FormLabel>Consultation Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               className={cn(
-                                "w-full h-12 pl-3 text-left font-normal border-gray-800 bg-transparent hover:bg-transparent hover:text-white hover:border-gray-700",
+                                "w-full h-12 pl-3 text-left font-normal border-[#D0A9F5] bg-white hover:border-[#B977F5] rounded-lg",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
                               {field.value ? (
                                 format(field.value, "PPP")
                               ) : (
-                                <span className="text-gray-400">Pick a date</span>
+                                <span className="text-[#6C3483]">Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
+                        <PopoverContent className="w-auto p-0 bg-white rounded-lg" align="start">
                           <Calendar
                             mode="single"
                             selected={field.value}
@@ -147,47 +150,22 @@ export default function BookingForm() {
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormDescription className="text-gray-400">
-                        Select your preferred consultation date.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+            </div>
 
-              {/* Right Column */}
-              <div className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="files"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Documents</FormLabel>
-                      <FormControl>
-                        <FileUpload
-                          onChange={(files) => field.onChange(files)}
-                        />
-                      </FormControl>
-                      <FormDescription className="text-gray-400">
-                        Upload any relevant documents (optional)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex flex-col gap-4 pt-4">
-                  <Button type="submit" className="w-full bg-white text-black hover:text-white">
-                    Book Consultation
-                  </Button>
-                  <Link href="/" className="w-full">
-                    <Button type="button" className="w-full bg-white text-black hover:text-white">
-                      Back to Home
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+            <div className="flex flex-col gap-4 pt-4">
+              <Button type="submit" className="w-full bg-[#6C3483] text-white hover:bg-[#4A235A] rounded-lg py-3">
+                Book Consultation
+              </Button>
+              <Link href="/" className="w-full">
+                <Button type="button" className="w-full bg-[#D0A9F5] text-[#4A235A] hover:bg-[#B977F5] rounded-lg py-3">
+                  Back to Home
+                </Button>
+              </Link>
             </div>
           </form>
         </Form>
