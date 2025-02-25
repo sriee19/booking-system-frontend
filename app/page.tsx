@@ -1,35 +1,76 @@
 "use client";
 
-import React from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CalendarIcon, Users, BookOpen } from "lucide-react";
 import Link from "next/link";
-import { FiArrowRight, FiHome, FiUser, FiGrid } from "react-icons/fi";
-import FloatingNav from "@/components/ui/floating-navbar";
-import SignupDialog from "@/components/SignupDialog";
-
-const navItems = [
-  { name: "Home", link: "/", icon: <FiHome className="h-4 w-4" /> },
-  { name: "Book Now", link: "/booking", icon: <FiUser className="h-4 w-4" /> },
-  { name: "Dashboard", link: "/dashboard", icon: <FiGrid className="h-4 w-4" /> },
-];
 
 export default function Home() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center bg-lavender text-gray-900 p-6">
-      <FloatingNav navItems={navItems} className="mb-6" />
-      
-      <h1 className="text-4xl font-bold text-purple-800 text-center mb-6">
-        Welcome to Consultation Booking System
-      </h1>
-      
-      <div className="flex space-x-4">
-        <SignupDialog />
-        
-        <Link href="/booking">
-          <button className="flex items-center px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-            Book Now <FiArrowRight className="ml-2" />
-          </button>
-        </Link>
+    <main className="min-h-screen bg-gradient-to-b from-background to-secondary">
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold tracking-tight mb-4">
+            Expert Consultation Booking
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Schedule your personalized consultation session with our experts. Get valuable insights and guidance tailored to your needs.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="text-center">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CalendarIcon className="w-6 h-6 text-primary" />
+              </div>
+              <CardTitle>Book Consultation</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                Schedule a new consultation session with our experts
+              </p>
+              <Link href="/book">
+                <Button>Book Now</Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="text-center">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-6 h-6 text-primary" />
+              </div>
+              <CardTitle>My Bookings</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                View and manage your consultation bookings
+              </p>
+              <Link href="/dashboard">
+                <Button variant="outline">View Bookings</Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="text-center">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <CardTitle>Admin Portal</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                Admin access to manage all bookings
+              </p>
+              <Link href="/admin">
+                <Button variant="outline">Admin Login</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </section>
+    </main>
   );
 }

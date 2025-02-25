@@ -11,7 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Skeleton } from "@/components/ui/skeleton";
 import { FiSearch, FiFilter, FiTrash2, FiUser, FiHome, FiLogOut, FiGrid } from "react-icons/fi";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-toast";
 import FloatingNav from "@/components/ui/floating-navbar";
 
 const navItems = [
