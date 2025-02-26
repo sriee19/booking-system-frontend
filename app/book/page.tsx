@@ -8,32 +8,55 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { CalendarIcon, Upload } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 export default function BookingPage() {
   const router = useRouter();
-  const [date, setDate] = useState<Date>();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    file: null as File | null,
-  });
+  const [date, setDate] = useState<Date | null>(null);
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement booking logic
-    console.log("Booking attempt:", { ...formData, date });
-  };
+    setError(null);
+    setSuccess(null);
+    setLoading(true);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, file: e.target.files[0] });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Unauthorized: Please log in first.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const API_URL =process.env.NEXT_DEPLOY_API_URL || "https://booking-system.srisanjanaarunkumar.workers.dev";
+      const res = await fetch(`${API_URL}/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          calendarDate: date?.toISOString(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Booking failed");
+
+      setSuccess("Booking successful!");
+      setTimeout(() => router.push("/dashboard"), 2000); // Redirect after success
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,9 +65,7 @@ export default function BookingPage() {
       <div className="container mx-auto max-w-4xl">
         <Card className="mt-8">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-              Book a Consultation
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Book a Consultation</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -55,9 +76,7 @@ export default function BookingPage() {
                     id="name"
                     placeholder="Enter your full name"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                   />
                 </div>
@@ -68,9 +87,7 @@ export default function BookingPage() {
                     type="email"
                     placeholder="Enter your email"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
@@ -80,46 +97,28 @@ export default function BookingPage() {
                 <Label>Select Date and Time</Label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                      )}
-                    >
+                    <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {date ? format(date, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                      initialFocus
-                    />
+                  <Calendar
+  mode="single"
+  selected={date || undefined} // Ensure selected value is not null
+  onSelect={(day) => setDate(day ?? null)} // Convert 'undefined' to 'null'
+  initialFocus
+/>
+
                   </PopoverContent>
                 </Popover>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="file">Upload Document</Label>
-                <div className="flex items-center gap-4">
-                  <Input
-                    id="file"
-                    type="file"
-                    onChange={handleFileChange}
-                    className="cursor-pointer"
-                  />
-                  <Upload className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Upload any relevant documents for the consultation (optional)
-                </p>
-              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {success && <p className="text-green-500 text-sm">{success}</p>}
 
-              <Button type="submit" className="w-full">
-                Book Consultation
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Booking..." : "Book Consultation"}
               </Button>
             </form>
           </CardContent>
