@@ -35,7 +35,7 @@ export default function LoginPage() {
       localStorage.setItem("token", data.token);
       
       alert("Login successful! Redirecting...");
-      router.push("/book"); 
+      router.push("/home"); 
     } catch (err: any) {
       setError(err.message);
     } finally {

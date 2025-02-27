@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import AdminSidebar from "@/components/ui/admin-sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -56,7 +57,7 @@ export default function DashboardPage() {
       const token = localStorage.getItem("token");
       const API_URL = process.env.NEXT_DEPLOY_API_URL || "https://booking-system.srisanjanaarunkumar.workers.dev";
       
-      const res = await fetch(`${API_URL}/bookings/user`, {
+      const res = await fetch(`${API_URL}/bookings/book`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -128,8 +129,14 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
-      <div className="container mx-auto max-w-6xl">
+    <div className="min-h-screen flex bg-gradient-to-b from-background to-secondary p-4">
+      {/* Sidebar with fixed width */}
+      <div className="w-64">
+        <AdminSidebar />
+      </div>
+  
+      {/* Main Content */}
+      <div className="flex-1 container mx-auto max-w-6xl">
         <Card className="mt-8">
           <CardHeader>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -148,7 +155,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -197,31 +204,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Edit Dialog */}
-      {selectedBooking && (
-        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent>
-            <DialogHeader><DialogTitle>Edit Booking Status</DialogTitle></DialogHeader>
-            <Input value={newStatus} onChange={(e) => setNewStatus(e.target.value)} />
-            <DialogFooter>
-              <Button onClick={updateBooking}>Save</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
-
-      {/* Delete Dialog */}
-      {selectedBooking && (
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent>
-            <DialogHeader><DialogTitle>Cancel Booking?</DialogTitle></DialogHeader>
-            <DialogFooter>
-              <Button onClick={deleteBooking}>Confirm</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   );
-}
+}  
