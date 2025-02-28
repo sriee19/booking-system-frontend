@@ -35,7 +35,9 @@ export default function BookingPage() {
     }
 
     try {
-      const API_URL =process.env.NEXT_DEPLOY_API_URL || "https://booking-system.srisanjanaarunkumar.workers.dev";
+      const API_URL =
+        process.env.NEXT_DEPLOY_API_URL ||
+        "https://booking-system.srisanjanaarunkumar.workers.dev";
       const res = await fetch(`${API_URL}/bookings`, {
         method: "POST",
         headers: {
@@ -53,7 +55,7 @@ export default function BookingPage() {
       if (!res.ok) throw new Error(data.error || "Booking failed");
 
       setSuccess("Booking successful!");
-      setTimeout(() => router.push("/dashboard"), 2000); // Redirect after success
+      setTimeout(() => router.push("/dashboard"), 2000);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -62,34 +64,41 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Sidebar with fixed width */}
-      <aside className="w-64 bg-background p-4">
+    <div className="min-h-screen flex bg-gradient-to-b from-[#E6E6FA] to-[#D8BFD8] dark:from-[#2E1A47] dark:to-[#1E1029]">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white dark:bg-[#3A2354] shadow-lg p-4">
         <UserSidebar />
       </aside>
-  
-      {/* Main content */}
+
+      {/* Main Content */}
       <main className="flex-1 p-4 flex justify-center">
         <div className="container mx-auto max-w-4xl">
-          <Card className="mt-8">
+          <Card className="mt-8 bg-white dark:bg-[#3A2354] shadow-lg rounded-lg border border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">Book a Consultation</CardTitle>
+              <CardTitle className="text-2xl font-bold text-center text-[#4B0082] dark:text-[#D8BFD8]">
+                Book a Consultation
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="text-[#4B0082] dark:text-[#D8BFD8]">
+                      Full Name
+                    </Label>
                     <Input
                       id="name"
                       placeholder="Enter your full name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
+                      className="border border-[#9370DB] dark:border-[#C0A6E8] bg-white dark:bg-[#442B69] text-gray-900 dark:text-white"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-[#4B0082] dark:text-[#D8BFD8]">
+                      Email
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -97,34 +106,45 @@ export default function BookingPage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
+                      className="border border-[#9370DB] dark:border-[#C0A6E8] bg-white dark:bg-[#442B69] text-gray-900 dark:text-white"
                     />
                   </div>
                 </div>
-  
+
                 <div className="space-y-2">
-                  <Label>Select Date and Time</Label>
+                  <Label className="text-[#4B0082] dark:text-[#D8BFD8]">Select Date and Time</Label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal border-[#9370DB] dark:border-[#C0A6E8] text-gray-900 dark:text-white bg-white dark:bg-[#442B69]",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {date ? format(date, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 bg-white dark:bg-[#442B69] border-[#9370DB] dark:border-[#C0A6E8]" align="start">
                       <Calendar
                         mode="single"
-                        selected={date || undefined} // Ensure selected value is not null
-                        onSelect={(day) => setDate(day ?? null)} // Convert 'undefined' to 'null'
+                        selected={date || undefined}
+                        onSelect={(day) => setDate(day ?? null)}
                         initialFocus
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
-  
+
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 {success && <p className="text-green-500 text-sm">{success}</p>}
-  
-                <Button type="submit" className="w-full" disabled={loading}>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-[#9370DB] hover:bg-[#8A2BE2] text-white dark:bg-[#6A0DAD] dark:hover:bg-[#7B1FA2]"
+                  disabled={loading}
+                >
                   {loading ? "Booking..." : "Book Consultation"}
                 </Button>
               </form>
@@ -134,5 +154,4 @@ export default function BookingPage() {
       </main>
     </div>
   );
-  
 }
