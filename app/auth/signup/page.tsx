@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import {Toaster, toast } from "react-hot-toast";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -17,14 +18,12 @@ export default function SignupPage() {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
+      toast.error("Passwords do not match.", { position: "top-right" });
       return;
     }
 
@@ -46,10 +45,10 @@ export default function SignupPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Signup failed");
 
-      alert("Signup successful! Redirecting to login...");
-      router.push("/auth/login");
+      toast.success("Signup successful! Redirecting to login...", { position: "top-right" });
+      setTimeout(() => router.push("/auth/login"), 1500);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message, { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -64,6 +63,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#E6E6FA] to-[#D8BFD8] dark:from-[#2E1A47] dark:to-[#1E1029] p-4">
+      <Toaster/>
       <Card className="w-full max-w-md bg-white dark:bg-[#3A2354] shadow-lg rounded-lg border border-gray-200 dark:border-gray-700">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center text-[#4B0082] dark:text-[#D8BFD8]">
@@ -127,7 +127,6 @@ export default function SignupPage() {
                 className="border border-[#9370DB] dark:border-[#C0A6E8] bg-white dark:bg-[#442B69] text-gray-900 dark:text-white"
               />
             </div>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button
               type="submit"
               className="w-full bg-[#9370DB] hover:bg-[#8A2BE2] text-white dark:bg-[#6A0DAD] dark:hover:bg-[#7B1FA2]"

@@ -12,24 +12,21 @@ import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import UserSidebar from "@/components/ui/user-sidebar";
+import { Toaster,toast } from "react-hot-toast";
 
 export default function BookingPage() {
   const router = useRouter();
   const [date, setDate] = useState<Date | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
     setLoading(true);
 
     const token = localStorage.getItem("token");
     if (!token) {
-      setError("Unauthorized: Please log in first.");
+      toast.error("Unauthorized: Please log in first.", { position: "top-right" });
       setLoading(false);
       return;
     }
@@ -54,10 +51,10 @@ export default function BookingPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Booking failed");
 
-      setSuccess("Booking successful!");
+      toast.success("Booking successful! Redirecting...", { position: "top-right" });
       setTimeout(() => router.push("/dashboard"), 2000);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message, { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -65,6 +62,7 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-[#E6E6FA] to-[#D8BFD8] dark:from-[#2E1A47] dark:to-[#1E1029]">
+      <Toaster/>
       {/* Sidebar */}
       <aside className="w-64 bg-white dark:bg-[#3A2354] shadow-lg p-4">
         <UserSidebar />
@@ -136,9 +134,6 @@ export default function BookingPage() {
                     </PopoverContent>
                   </Popover>
                 </div>
-
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-                {success && <p className="text-green-500 text-sm">{success}</p>}
 
                 <Button
                   type="submit"

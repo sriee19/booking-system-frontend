@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarIcon, Users, BookOpen, Sparkles, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
+import { Toaster, toast } from "react-hot-toast";
 
 const lavenderBg = "bg-[#E6E6FA] dark:bg-[#2D1B5A]";
 const lavenderText = "text-[#5D3FD3] dark:text-[#D8BFD8]";
@@ -30,17 +31,19 @@ export default function Home() {
         const decodedUser: User = jwtDecode(token);
         setUser(decodedUser);
       } catch (error) {
-        console.error("Invalid token:", error);
+        toast.error("Invalid token, please log in again!", { position: "top-right" });
         localStorage.removeItem("token");
         router.push("/auth/login");
       }
     } else {
+      toast.error("You need to log in first!", { position: "top-right" });
       router.push("/auth/login");
     }
   }, [router]);
 
   return (
     <main className={`min-h-screen ${lavenderBg}`}>
+      <Toaster /> {/* Toast messages appear here */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16 space-y-4 p-2">
           <div className={`inline-block p-2 ${lavenderBg} rounded-full mb-4`}>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Mail, Calendar, Lock } from "lucide-react";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { Toaster,toast } from "react-hot-toast";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -56,6 +56,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
+      <Toaster/>
       <div className="container mx-auto max-w-4xl">
         <Card className="mt-8">
           <CardHeader>

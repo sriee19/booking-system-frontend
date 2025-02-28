@@ -21,9 +21,10 @@ import {
 import { Search,Calendar, FileText } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { toast } from "react-hot-toast";
+import {Toaster, toast } from "react-hot-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import UserSidebar from "@/components/ui/user-sidebar";
+
 
 type Booking = {
   uid: string;
@@ -140,6 +141,7 @@ export default function DashboardPage() {
 
   return (
     <div className={`min-h-screen flex ${lavenderBg} text-gray-900 dark:text-gray-100`}>
+      <Toaster/>
       <aside className={`w-64 p-4 ${lavenderBg}`}> <UserSidebar /> </aside>
       <main className="flex-1 p-6">
         <div className="container mx-auto max-w-6xl">
