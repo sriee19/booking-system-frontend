@@ -49,83 +49,85 @@ export default function Home() {
           <div className={`inline-block p-2 ${lavenderBg} rounded-full mb-4`}>
             <Sparkles className={`w-8 h-8 ${lavenderText}`} />
           </div>
-          <h1 className={`text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-[#5D3FD3] to-[#B19CD9] dark:from-[#D8BFD8] dark:to-[#4B0082] text-transparent bg-clip-text`}>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-[#5D3FD3] to-[#B19CD9] dark:from-[#D8BFD8] dark:to-[#4B0082] text-transparent bg-clip-text">
             Consultation Booking
           </h1>
         </div>
-
+  
         {user && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* User Section */}
             {user.role === "user" && (
               <>
-                <Card className={`group hover:shadow-xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-sm`}>
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className={`w-12 h-12 ${lavenderBg} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                      <CalendarIcon className={`w-6 h-6 ${lavenderText}`} />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <CalendarIcon className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>Book Consultation</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">Book Consultation</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Schedule a new consultation session with our experts.
                     </p>
                     <Link href="/book">
-                      <Button className={`w-full ${lavenderText} ${lavenderHover}`}>Book Now</Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>Book Now</Button>
                     </Link>
                   </CardContent>
                 </Card>
-
-                <Card className={`group hover:shadow-xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-sm`}>
+  
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className={`w-12 h-12 ${lavenderBg} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                      <BookOpen className={`w-6 h-6 ${lavenderText}`} />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <BookOpen className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>My Bookings</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">My Bookings</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
                       View and manage your consultation bookings.
                     </p>
                     <Link href="/dashboard">
-                      <Button variant="outline" className={`w-full ${lavenderBorder} ${lavenderHover}`}>View Bookings</Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View Bookings</Button>
                     </Link>
                   </CardContent>
                 </Card>
               </>
             )}
-
+  
+            {/* Admin Section */}
             {user.role === "admin" && (
               <>
-                <Card className={`group hover:shadow-xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-sm`}>
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className={`w-12 h-12 ${lavenderBg} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                      <Users className={`w-6 h-6 ${lavenderText}`} />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <Users className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>View Users</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">View Users</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Browse and manage registered users.
                     </p>
                     <Link href="/admin/users">
-                      <Button variant="outline" className={`w-full ${lavenderBorder} ${lavenderHover}`}>View Users</Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View Users</Button>
                     </Link>
                   </CardContent>
                 </Card>
-
-                <Card className={`group hover:shadow-xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-sm`}>
+  
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className={`w-12 h-12 ${lavenderBg} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                      <ClipboardList className={`w-6 h-6 ${lavenderText}`} />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <ClipboardList className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>View All Bookings</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">View All Bookings</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Admin access to all user bookings.
                     </p>
                     <Link href="/admin/board">
-                      <Button variant="outline" className={`w-full ${lavenderBorder} ${lavenderHover}`}>View All Bookings</Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View All Bookings</Button>
                     </Link>
                   </CardContent>
                 </Card>
@@ -136,4 +138,5 @@ export default function Home() {
       </div>
     </main>
   );
+  
 }
