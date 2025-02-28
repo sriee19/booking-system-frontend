@@ -69,22 +69,22 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
+    <div className="min-h-screen bg-gradient-to-b from-lavender-light to-lavender-dark dark:from-lavender-dark dark:to-gray-900 p-4">
       <Toaster />
       <div className="container mx-auto max-w-2xl">
-        <Link href="/profile" className="inline-flex items-center text-primary hover:text-primary/80 mb-4">
+        <Link href="/profile" className="inline-flex items-center text-lavender-dark hover:text-lavender-light dark:text-lavender-light dark:hover:text-lavender-muted mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Profile
         </Link>
         
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold">Change Password</CardTitle>
+            <CardTitle className="text-2xl font-bold text-lavender-dark dark:text-lavender-light">Change Password</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
+                <Label htmlFor="currentPassword" className="text-lavender-dark dark:text-lavender-light">Current Password</Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -93,13 +93,14 @@ export default function ChangePasswordPage() {
                     value={formData.currentPassword}
                     onChange={handleChange}
                     required
+                    className="bg-white dark:bg-gray-800 border-lavender-light dark:border-lavender-muted"
                   />
-                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-muted" />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password</Label>
+                <Label htmlFor="newPassword" className="text-lavender-dark dark:text-lavender-light">New Password</Label>
                 <div className="relative">
                   <Input
                     id="newPassword"
@@ -108,13 +109,14 @@ export default function ChangePasswordPage() {
                     value={formData.newPassword}
                     onChange={handleChange}
                     required
+                    className="bg-white dark:bg-gray-800 border-lavender-light dark:border-lavender-muted"
                   />
-                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-muted" />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword" className="text-lavender-dark dark:text-lavender-light">Confirm New Password</Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -123,21 +125,14 @@ export default function ChangePasswordPage() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
+                    className="bg-white dark:bg-gray-800 border-lavender-light dark:border-lavender-muted"
                   />
-                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-muted" />
                 </div>
               </div>
-
-              <div className="flex gap-4">
-                <Button type="submit" className="flex-1" disabled={loading}>
-                  {loading ? "Updating..." : "Update Password"}
-                </Button>
-                <Link href="/profile" className="flex-1">
-                  <Button variant="outline" className="w-full">
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
+              <Button type="submit" className="w-full bg-lavender-dark hover:bg-lavender/90 dark:bg-lavender-light dark:hover:bg-lavender text-white dark:text-gray-900" disabled={loading}>
+                {loading ? "Updating..." : "Update Password"}
+              </Button>
             </form>
           </CardContent>
         </Card>

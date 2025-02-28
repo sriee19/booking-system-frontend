@@ -4,9 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarIcon, Users, BookOpen, Sparkles, List, ClipboardList } from "lucide-react";
+import { CalendarIcon, Users, BookOpen, Sparkles, ClipboardList } from "lucide-react";
 import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
+import { Toaster, toast } from "react-hot-toast";
+
+const lavenderBg = "bg-[#E6E6FA] dark:bg-[#2D1B5A]";
+const lavenderText = "text-[#5D3FD3] dark:text-[#D8BFD8]";
+const lavenderBorder = "border-[#B19CD9] dark:border-[#4B0082]";
+const lavenderHover = "hover:bg-[#D8BFD8] dark:hover:bg-[#3E1C72]";
 
 interface User {
   uuid: string;
@@ -25,110 +31,103 @@ export default function Home() {
         const decodedUser: User = jwtDecode(token);
         setUser(decodedUser);
       } catch (error) {
-        console.error("Invalid token:", error);
+        toast.error("Invalid token, please log in again!", { position: "top-right" });
         localStorage.removeItem("token");
-        router.push("/auth/login"); // Redirect to login if token is invalid
+        router.push("/auth/login");
       }
     } else {
-      router.push("/auth/login"); // Redirect to login if no token found
+      toast.error("You need to log in first!", { position: "top-right" });
+      router.push("/auth/login");
     }
   }, [router]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary">
+    <main className={`min-h-screen ${lavenderBg}`}>
+      <Toaster /> {/* Toast messages appear here */}
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16 space-y-4">
-          <div className="inline-block p-2 bg-primary/10 rounded-full mb-4">
-            <Sparkles className="w-8 h-8 text-primary" />
+        <div className="text-center mb-16 space-y-4 p-2">
+          <div className={`inline-block p-2 ${lavenderBg} rounded-full mb-4`}>
+            <Sparkles className={`w-8 h-8 ${lavenderText}`} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-primary to-primary/60 text-transparent bg-clip-text">
-            Expert Consultation Booking
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-[#5D3FD3] to-[#B19CD9] dark:from-[#D8BFD8] dark:to-[#4B0082] text-transparent bg-clip-text">
+            Consultation Booking
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Schedule your personalized consultation session with our experts. Get valuable insights and guidance tailored to your needs.
-          </p>
         </div>
-
+  
         {user && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* User-specific Cards */}
+            {/* User Section */}
             {user.role === "user" && (
               <>
-                <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm">
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                      <CalendarIcon className="w-6 h-6 text-primary" />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <CalendarIcon className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>Book Consultation</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">Book Consultation</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Schedule a new consultation session with our experts.
                     </p>
                     <Link href="/book">
-                      <Button className="w-full bg-primary/90 hover:bg-primary">Book Now</Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>Book Now</Button>
                     </Link>
                   </CardContent>
                 </Card>
-
-                <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm">
+  
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                      <BookOpen className="w-6 h-6 text-primary" />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <BookOpen className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>My Bookings</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">My Bookings</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                       View and manage your consultation bookings.
                     </p>
                     <Link href="/dashboard">
-                      <Button variant="outline" className="w-full border-primary/20 hover:border-primary/40">
-                        View Bookings
-                      </Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View Bookings</Button>
                     </Link>
                   </CardContent>
                 </Card>
               </>
             )}
-
-            {/* Admin-specific Cards */}
+  
+            {/* Admin Section */}
             {user.role === "admin" && (
               <>
-                <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm">
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                      <Users className="w-6 h-6 text-primary" />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <Users className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>View Users</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">View Users</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Browse and manage registered users.
                     </p>
                     <Link href="/admin/users">
-                      <Button variant="outline" className="w-full border-primary/20 hover:border-primary/40">
-                        View Users
-                      </Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View Users</Button>
                     </Link>
                   </CardContent>
                 </Card>
-
-                <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm">
+  
+                <Card className={`group hover:shadow-2xl transition-all duration-300 hover:scale-105 ${lavenderBg} backdrop-blur-lg rounded-lg border border-gray-300`}>
                   <CardHeader className="text-center">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                      <ClipboardList className="w-6 h-6 text-primary" />
+                    <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                      <ClipboardList className="w-6 h-6 text-gray-900 dark:text-white" />
                     </div>
-                    <CardTitle>View All Bookings</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">View All Bookings</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
                       Admin access to all user bookings.
                     </p>
                     <Link href="/admin/board">
-                      <Button variant="outline" className="w-full border-primary/20 hover:border-primary/40">
-                        View All Bookings
-                      </Button>
+                      <Button className={`w-full bg-[#5D3FD3] text-white hover:bg-[#4B0082]`}>View All Bookings</Button>
                     </Link>
                   </CardContent>
                 </Card>
@@ -139,4 +138,5 @@ export default function Home() {
       </div>
     </main>
   );
+  
 }

@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Mail, Calendar, Lock } from "lucide-react";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { Toaster,toast } from "react-hot-toast";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ name: string; email: string; joinedDate: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string;  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,8 +37,7 @@ export default function ProfilePage() {
 
         setUser({
           name: data.name,
-          email: data.email,
-          joinedDate: new Date(data.joinedDate).toLocaleDateString(),
+          email: data.email
         });
       } catch (error: any) {
         toast.error(error.message || "Something went wrong");
@@ -56,6 +55,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
+      <Toaster/>
       <div className="container mx-auto max-w-4xl">
         <Card className="mt-8">
           <CardHeader>
@@ -86,16 +86,16 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="space-y-1">
+                {/* <div className="space-y-1">
                   <label className="text-sm text-muted-foreground">Member Since</label>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-primary" />
                     <span className="text-lg">{user.joinedDate}</span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <Link href="/profile">
+                  <Link href="/profile/update">
                     <Button className="w-full sm:w-auto">
                       Update Profile
                     </Button>
