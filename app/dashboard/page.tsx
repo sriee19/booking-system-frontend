@@ -52,6 +52,7 @@ export default function DashboardPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [newStatus, setNewStatus] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
     fetchBookings();
@@ -139,6 +140,16 @@ export default function DashboardPage() {
     }
   };
 
+  const filteredBookings = bookings.filter((booking) => {
+    return (
+      (searchTerm === "" || 
+        booking.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.email.toLowerCase().includes(searchTerm.toLowerCase())
+      ) &&
+      (statusFilter === "" || booking.status === statusFilter)
+    );
+  });
+
   return (
     <div className={`min-h-screen flex ${lavenderBg} text-gray-900 dark:text-gray-100`}>
       <Toaster/>
@@ -171,37 +182,38 @@ export default function DashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {loading ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <TableRow key={i}>
-                        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                        <TableCell><Skeleton className="h-4 w-[150px]" /></TableCell>
-                        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
-                        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
-                        <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    bookings.map((booking) => (
-                      <TableRow key={booking.uid} className={`${lavenderHover}`}>
-                        <TableCell>{booking.name}</TableCell>
-                        <TableCell>{booking.calendarDate}</TableCell>
-                        <TableCell>
-                          <a href={booking.fileurl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                            <FileText className="mr-1 h-4 w-4" /> Join Meeting
-                          </a>
-                        </TableCell>
-                        <TableCell>{booking.status}</TableCell>
-                        <TableCell>{booking.paymentStatus}</TableCell>
-                        <TableCell>
-                          <Button size="sm" className={lavenderHover} variant="outline" onClick={() => openEditDialog(booking)}>Edit</Button>
-                          <Button size="sm" className="bg-red-500 hover:bg-red-700 text-white" variant="destructive" onClick={() => openDeleteDialog(booking)}>Delete</Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
+  {loading ? (
+    Array.from({ length: 3 }).map((_, i) => (
+      <TableRow key={i}>
+        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
+        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
+        <TableCell><Skeleton className="h-4 w-[150px]" /></TableCell>
+        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
+        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
+        <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
+      </TableRow>
+    ))
+  ) : (
+    filteredBookings.map((booking) => (
+      <TableRow key={booking.uid} className={`${lavenderHover}`}>
+        <TableCell>{booking.name}</TableCell>
+        <TableCell>{booking.calendarDate}</TableCell>
+        <TableCell>
+          <a href={booking.fileurl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            <FileText className="mr-1 h-4 w-4" /> Join Meeting
+          </a>
+        </TableCell>
+        <TableCell>{booking.status}</TableCell>
+        <TableCell>{booking.paymentStatus}</TableCell>
+        <TableCell>
+          <Button size="sm" className={lavenderHover} variant="outline" onClick={() => openEditDialog(booking)}>Edit</Button>
+          <Button size="sm" className="bg-red-500 hover:bg-red-700 text-white" variant="destructive" onClick={() => openDeleteDialog(booking)}>Delete</Button>
+        </TableCell>
+      </TableRow>
+    ))
+  )}
+</TableBody>
+
               </Table>
             </CardContent>
           </Card>
