@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Lock } from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -17,10 +19,46 @@ export default function ChangePasswordPage() {
     confirmPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement password change logic
-    console.log("Password change attempt:", formData);
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      toast.error("New passwords do not match!");
+      return;
+    }
+
+    setLoading(true);
+  
+    try {
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_DEPLOY_API_URL || "https://booking-system.srisanjanaarunkumar.workers.dev";
+
+      const res = await fetch(`${API_URL}/auth/change-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+        }),
+      });
+
+      const data = await res.json();
+  
+      if (!res.ok) throw new Error(data.error || "Failed to update password");
+
+      toast.success("Password updated successfully!");
+      router.push("/profile");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +70,7 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
+      <Toaster />
       <div className="container mx-auto max-w-2xl">
         <Link href="/profile" className="inline-flex items-center text-primary hover:text-primary/80 mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -90,8 +129,8 @@ export default function ChangePasswordPage() {
               </div>
 
               <div className="flex gap-4">
-                <Button type="submit" className="flex-1">
-                  Update Password
+                <Button type="submit" className="flex-1" disabled={loading}>
+                  {loading ? "Updating..." : "Update Password"}
                 </Button>
                 <Link href="/profile" className="flex-1">
                   <Button variant="outline" className="w-full">

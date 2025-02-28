@@ -82,7 +82,7 @@ export default function Home() {
                     <p className="text-muted-foreground mb-4">
                       View and manage your consultation bookings.
                     </p>
-                    <Link href="/admin/board">
+                    <Link href="/dashboard">
                       <Button variant="outline" className="w-full border-primary/20 hover:border-primary/40">
                         View Bookings
                       </Button>
@@ -125,7 +125,7 @@ export default function Home() {
                     <p className="text-muted-foreground mb-4">
                       Admin access to all user bookings.
                     </p>
-                    <Link href="/bookings">
+                    <Link href="/admin/board">
                       <Button variant="outline" className="w-full border-primary/20 hover:border-primary/40">
                         View All Bookings
                       </Button>

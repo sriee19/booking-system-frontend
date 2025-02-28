@@ -86,33 +86,33 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex bg-[#E6E6FA] min-h-screen">
       <AdminSidebar />
-      <main className="flex-1 p-6">
-        <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
+      <main className="flex-1 p-6 bg-[#F4E1FF] shadow-lg border border-[#D8BFD8]">
+        <h2 className="text-2xl font-bold mb-4 text-[#4B0082]">Manage Users</h2>
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-[#E6E6FA]">
             <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-[#4B0082]">Email</TableHead>
+              <TableHead className="text-[#4B0082]">Role</TableHead>
+              <TableHead className="text-[#4B0082]">Created At</TableHead>
+              <TableHead className="text-[#4B0082]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-[#4B0082]">Loading...</TableCell></TableRow>
             ) : (
               users.map((user) => (
                 <TableRow key={user.uuid}>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell className="text-[#4B0082]">{user.email}</TableCell>
+                  <TableCell className="text-[#4B0082]">{user.role}</TableCell>
+                  <TableCell className="text-[#4B0082]">{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
-                    <Button onClick={() => updateRole(user.uuid, user.role === "admin" ? "user" : "admin")}>
-                      Toggle Role
+                    <Button className="border-[#6A5ACD] text-[#4B0082] hover:bg-[#D8BFD8]" onClick={() => updateRole(user.uuid, user.role === "admin" ? "user" : "admin")}>
+                      Edit
                     </Button>
-                    <Button variant="destructive" onClick={() => deleteUser(user.uuid)}>
+                    <Button className="bg-[#D8BFD8] text-white hover:bg-[#C9A9D8]" variant="destructive" onClick={() => deleteUser(user.uuid)}>
                       Delete
                     </Button>
                   </TableCell>

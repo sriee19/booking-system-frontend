@@ -1,18 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Mail, Calendar, Lock } from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 export default function ProfilePage() {
-  // Mock user data - replace with actual user data
-  const [user] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    joinedDate: "March 2024",
-  });
+  const router = useRouter();
+  const [user, setUser] = useState<{ name: string; email: string; joinedDate: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Unauthorized! Please log in.");
+        router.push("/auth/login");
+        return;
+      }
+
+      try {
+        const API_URL = process.env.NEXT_DEPLOY_API_URL || "https://booking-system.srisanjanaarunkumar.workers.dev";
+
+        const res = await fetch(`${API_URL}/auth/user`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to fetch user");
+
+        setUser({
+          name: data.name,
+          email: data.email,
+          joinedDate: new Date(data.joinedDate).toLocaleDateString(),
+        });
+      } catch (error: any) {
+        toast.error(error.message || "Something went wrong");
+        router.push("/auth/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [router]);
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (!user) return <p className="text-center mt-10">User not found</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
@@ -55,7 +95,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                  <Link href="/profile/update">
+                  <Link href="/profile">
                     <Button className="w-full sm:w-auto">
                       Update Profile
                     </Button>

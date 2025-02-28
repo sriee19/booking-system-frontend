@@ -31,7 +31,7 @@ export default function Navbar() {
 
         {/* Logout Button */}
         <button
-          onClick={() => router.push("/auth/logout")}
+          onClick={() => router.push("/auth/login")}
           className="flex items-center space-x-2 text-red-500"
         >
           <LogOut className="w-6 h-6" />
